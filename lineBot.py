@@ -1,8 +1,6 @@
 
 # coding: utf-8
 
-# In[1]:
-
 from flask import Flask, request, abort
 
 from linebot import (
@@ -50,5 +48,5 @@ def handle_message(event):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5001, ssl_context='adhoc', debug=True)
+    app.run(host='0.0.0.0', debug=True)
 
