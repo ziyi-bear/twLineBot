@@ -32,7 +32,7 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)
 def getStockInfoFromMsg(targetStockMsg):
     tempStockNumber = int(filter(str.isdigit, targetStockMsg))      #取得要查詢的目標股票號碼
     print("系統接收到使用者請求對股票資訊的查詢 股票查詢代碼為", tempStockNumber) #Debug Log紀錄
-    stock = Stock(tempStockNumber)                                  #擷取長榮航股價
+    stock = Stock(str(tempStockNumber))                                  #擷取長榮航股價
     return "計算五日均價與持續天數"+stock.moving_average(5)        #計算五日均價與持續天數
     #print(stock.moving_average_value(5))                        #計算五日均量與持續天數
     #print(stock.moving_average_bias_ratio(5, 10))               #計算五日、十日乖離值與持續天數
