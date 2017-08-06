@@ -55,9 +55,6 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="等待訓練的新模式"))
     else:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
-    line_bot_api.reply_message(
-        event.reply_token,
-        TextSendMessage(text=event.message.text))
     
 @app.route('/')
 def index():
