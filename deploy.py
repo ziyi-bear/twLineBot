@@ -5,8 +5,11 @@
 
 from flask import Flask, request, abort
 
+from datetime import datetime
+
 #說明文件:https://pypi.python.org/pypi/grs
 from grs import Stock #台灣上市上櫃股票價格擷取（Fetch Taiwan Stock Exchange data）含即時盤、台灣時間轉換、開休市判斷。
+from grs import TWSEOpen
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -39,6 +42,15 @@ def getStockInfoFromMsg(targetStockMsg):
     tempMovingAverageBiasRatio = "計算五日、十日乖離值與持續天數"+str(stock.moving_average_bias_ratio(5, 10))+NEWLINE
     return tempAskString+tempMovingAverageString+tempMovingAverageValueString+tempMovingAverageBiasRatio
 
+#判斷台灣股市是否開市：TWSEOpen
+def TWSEOpen():
+    open_or_not = TWSEOpen()
+    tempIsOpen = open_or_not.d_day(datetime.today())        # 判斷今天是否開市 回傳T或F(布林)
+    if tempIsOpen:
+        return "今天台灣股市開市"
+    else:
+        return "今天台灣股市不會開市" 
+
 #被Line Message API呼叫運作
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -63,6 +75,9 @@ def handle_message(event):
     msg = event.message.text
     print("使用者傳送的訊息為", msg)
     msg = msg.encode('utf-8')
+    if "開市" in msg:
+        stockOpenInfo = TWSEOpen()
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockOpenInfo))
     if "股票" in msg:
         stockInfoMsg = getStockInfoFromMsg(msg)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockInfoMsg))
