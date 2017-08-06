@@ -44,6 +44,17 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    msg = event.message.text
+    print("使用者傳送的訊息為", msg)
+    msg = msg.encode('utf-8')
+    if msg=="我愛小咖啡熊熊":
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="主人我也愛你"))
+    if msg=="小咖啡熊熊是正妹":
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="我是最美的小咖啡熊熊"))
+    if msg=="等待建立與過濾的資料":
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="等待訓練的新模式"))
+    else:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=event.message.text))
