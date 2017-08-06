@@ -20,8 +20,8 @@ LINE_CHANNEL_SECRET = "2d88fd33111410911fb8fe0ce0d55e45"
 
 app = Flask(__name__)
 
-line_bot_api = LineBotApi('LINE_CHANNEL_ACCESS_TOKEN')
-handler = WebhookHandler('LINE_CHANNEL_SECRET')
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
+handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
 
 @app.route("/callback", methods=['POST'])
