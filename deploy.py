@@ -52,7 +52,7 @@ def TWSEOpenFromMsg():
     else:
         return "今天台灣股市不會開市" 
 
-#大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）
+#大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）故障中
 def RealtimeWeightFromMsg():
     realtime_weight = RealtimeWeight() # 擷取即時大盤資訊
     #realtime_weight.raw # 原始檔案
@@ -88,9 +88,9 @@ def handle_message(event):
     if "開市" in msg: #查詢特定日期的開市時間(省略掉了 哈)
         stockOpenInfo = TWSEOpenFromMsg()
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockOpenInfo))
-    if "大盤及時盤" in msg: #大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）
-        stockRealTimeWeightInfo = RealtimeWeightFromMsg()
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockRealTimeWeightInfo))
+    #if "大盤及時盤" in msg: #大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）
+        #stockRealTimeWeightInfo = RealtimeWeightFromMsg()
+        #line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockRealTimeWeightInfo))
     if "股票" in msg:
         stockInfoMsg = getStockInfoFromMsg(msg)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockInfoMsg))
