@@ -21,6 +21,7 @@ from linebot.models import (
 #Line訊息API的所需參數
 LINE_CHANNEL_ACCESS_TOKEN = "mQVYL9n3SSe3W7LWU8vSEHLeu2Wr9Bk7B/e8lLTvbBIiqjCGWWc88YkCWIFrUtKH2oA+U5i8YO8FC4EEy2XAFdsXG7D6y7DVPFlk5zgEff205cB3rQ+jF2ilszTcE7wwcNEmg802/gAHBXJAlJ8WqAdB04t89/1O/w1cDnyilFU="
 LINE_CHANNEL_SECRET = "2d88fd33111410911fb8fe0ce0d55e45"
+NEWLINE = "\n"
 
 app = Flask(__name__)
 
@@ -31,9 +32,12 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)
 #查詢股票資料並回傳股票資料訊息(系統提示包含)-基本計算資料顯示(五日)
 def getStockInfoFromMsg(targetStockMsg):
     tempStockNumber = int(filter(str.isdigit, targetStockMsg)) #取得要查詢的目標股票號碼
-    print("系統接收到使用者請求對股票資訊的查詢 股票查詢代碼為", tempStockNumber) #Debug Log紀錄
+    tempAskString = "系統接收到使用者請求對股票資訊的查詢 股票查詢代碼為"+str(tempStockNumber)+NEWLINE #Debug Log紀錄
     stock = Stock(str(tempStockNumber)) #擷取特定股價相關資訊
-    return "計算五日均價與持續天數"+str(stock.moving_average(5))+"\n計算五日均量與持續天數"+str(stock.moving_average_value(5))+"\n計算五日、十日乖離值與持續天數"+str(stock.moving_average_bias_ratio(5, 10))
+    tempMovingAverageString =  "計算五日均價與持續天數"+str(stock.moving_average(5))+NEWLINE
+    tempMovingAverageValueString = "計算五日均量與持續天數"+str(stock.moving_average_value(5))+NEWLINE
+    tempMovingAverageBiasRatio = "計算五日、十日乖離值與持續天數"+str(stock.moving_average_bias_ratio(5, 10))+NEWLINE
+    return tempAskString+tempMovingAverageString+tempMovingAverageValueString+tempMovingAverageBiasRatio
 
 #被Line Message API呼叫運作
 @app.route("/callback", methods=['POST'])
