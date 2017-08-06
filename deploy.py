@@ -26,6 +26,7 @@ from linebot.models import (
 LINE_CHANNEL_ACCESS_TOKEN = "mQVYL9n3SSe3W7LWU8vSEHLeu2Wr9Bk7B/e8lLTvbBIiqjCGWWc88YkCWIFrUtKH2oA+U5i8YO8FC4EEy2XAFdsXG7D6y7DVPFlk5zgEff205cB3rQ+jF2ilszTcE7wwcNEmg802/gAHBXJAlJ8WqAdB04t89/1O/w1cDnyilFU="
 LINE_CHANNEL_SECRET = "2d88fd33111410911fb8fe0ce0d55e45"
 NEWLINE = "\n"
+STOCKRIGHT = "股票資料僅供參考，實際資料以證卷交易所網站為準，若有錯誤熊熊不附任何法律責任"
 
 app = Flask(__name__)
 
@@ -41,7 +42,7 @@ def getStockInfoFromMsg(targetStockMsg):
     tempMovingAverageString =  "計算五日均價與持續天數"+str(stock.moving_average(5))+NEWLINE
     tempMovingAverageValueString = "計算五日均量與持續天數"+str(stock.moving_average_value(5))+NEWLINE
     tempMovingAverageBiasRatio = "計算五日、十日乖離值與持續天數"+str(stock.moving_average_bias_ratio(5, 10))+NEWLINE
-    return tempAskString+tempMovingAverageString+tempMovingAverageValueString+tempMovingAverageBiasRatio
+    return tempAskString+tempMovingAverageString+tempMovingAverageValueString+tempMovingAverageBiasRatio+STOCKRIGHT
 
 #判斷台灣股市是否開市：TWSEOpen
 def TWSEOpenFromMsg():
