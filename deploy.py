@@ -10,6 +10,7 @@ from datetime import datetime
 #說明文件:https://pypi.python.org/pypi/grs
 from grs import Stock #台灣上市上櫃股票價格擷取（Fetch Taiwan Stock Exchange data）含即時盤、台灣時間轉換、開休市判斷。
 from grs import TWSEOpen
+from grs import RealtimeWeight
 
 from linebot import (
     LineBotApi, WebhookHandler
@@ -51,6 +52,12 @@ def TWSEOpenFromMsg():
     else:
         return "今天台灣股市不會開市" 
 
+#大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）
+def RealtimeWeightFromMsg():
+    realtime_weight = RealtimeWeight() # 擷取即時大盤資訊
+    realtime_weight.raw # 原始檔案
+    return str(realtime_weight.data) # 回傳 type: dict
+
 #被Line Message API呼叫運作
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -75,9 +82,15 @@ def handle_message(event):
     msg = event.message.text
     print("使用者傳送的訊息為", msg)
     msg = msg.encode('utf-8')
-    if "開市" in msg:
+    if "開市" in msg and "今天" in msg: #使用者目的是查詢今天會不會開市
         stockOpenInfo = TWSEOpenFromMsg()
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockOpenInfo))
+    if "開市" in msg: #查詢特定日期的開市時間(省略掉了 哈)
+        stockOpenInfo = TWSEOpenFromMsg()
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockOpenInfo))
+    if "大盤及時盤" in msg: #大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）
+        stockRealTimeWeightInfo = RealtimeWeightFromMsg()
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockRealTimeWeightInfo))
     if "股票" in msg:
         stockInfoMsg = getStockInfoFromMsg(msg)
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockInfoMsg))
@@ -93,7 +106,6 @@ def handle_message(event):
 @app.route('/')
 def index():
     return '部屬成功'
-
 
 if __name__ == "__main__":
     app.run()
