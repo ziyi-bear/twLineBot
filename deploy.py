@@ -15,25 +15,27 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 
+#Line訊息API的所需參數
 LINE_CHANNEL_ACCESS_TOKEN = "mQVYL9n3SSe3W7LWU8vSEHLeu2Wr9Bk7B/e8lLTvbBIiqjCGWWc88YkCWIFrUtKH2oA+U5i8YO8FC4EEy2XAFdsXG7D6y7DVPFlk5zgEff205cB3rQ+jF2ilszTcE7wwcNEmg802/gAHBXJAlJ8WqAdB04t89/1O/w1cDnyilFU="
 LINE_CHANNEL_SECRET = "2d88fd33111410911fb8fe0ce0d55e45"
 
 app = Flask(__name__)
 
+#Line訊息API
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
-
+#被Line Message API呼叫運作
 @app.route("/callback", methods=['POST'])
 def callback():
-    # get X-Line-Signature header value
+    # get X-Line-Signature header value 回覆所需的簽章(會不斷變換)
     signature = request.headers['X-Line-Signature']
 
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
 
-    # handle webhook body
+    # handle webhook body 處理webhook事件
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
