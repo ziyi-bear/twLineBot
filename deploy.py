@@ -43,7 +43,7 @@ def getStockInfoFromMsg(targetStockMsg):
     return tempAskString+tempMovingAverageString+tempMovingAverageValueString+tempMovingAverageBiasRatio
 
 #判斷台灣股市是否開市：TWSEOpen
-def TWSEOpen():
+def TWSEOpenFromMsg():
     open_or_not = TWSEOpen()
     tempIsOpen = open_or_not.d_day(datetime.today())        # 判斷今天是否開市 回傳T或F(布林)
     if tempIsOpen:
@@ -76,7 +76,7 @@ def handle_message(event):
     print("使用者傳送的訊息為", msg)
     msg = msg.encode('utf-8')
     if "開市" in msg:
-        stockOpenInfo = TWSEOpen()
+        stockOpenInfo = TWSEOpenFromMsg()
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockOpenInfo))
     if "股票" in msg:
         stockInfoMsg = getStockInfoFromMsg(msg)
