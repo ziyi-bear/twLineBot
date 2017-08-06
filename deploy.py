@@ -55,7 +55,7 @@ def TWSEOpenFromMsg():
 #大盤即時盤資訊：RealtimeWeight（加權指數、櫃檯指數、寶島指數）
 def RealtimeWeightFromMsg():
     realtime_weight = RealtimeWeight() # 擷取即時大盤資訊
-    realtime_weight.raw # 原始檔案
+    #realtime_weight.raw # 原始檔案
     return str(realtime_weight.data) # 回傳 type: dict
 
 #被Line Message API呼叫運作
