@@ -5,6 +5,9 @@
 
 from flask import Flask, request, abort
 
+#說明文件:https://pypi.python.org/pypi/grs
+from grs import Stock #台灣上市上櫃股票價格擷取（Fetch Taiwan Stock Exchange data）含即時盤、台灣時間轉換、開休市判斷。
+
 from linebot import (
     LineBotApi, WebhookHandler
 )
@@ -24,6 +27,15 @@ app = Flask(__name__)
 #Line訊息API
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
+
+#查詢股票資料並回傳股票資料訊息(系統提示包含)
+def getStockInfoFromMsg(targetStockMsg):
+    tempStockNumber = int(filter(str.isdigit, targetStockMsg))      #取得要查詢的目標股票號碼
+    print("系統接收到使用者請求對股票資訊的查詢 股票查詢代碼為", tempStockNumber) #Debug Log紀錄
+    stock = Stock(tempStockNumber)                                  #擷取長榮航股價
+    return "計算五日均價與持續天數"+stock.moving_average(5)        #計算五日均價與持續天數
+    #print(stock.moving_average_value(5))                        #計算五日均量與持續天數
+    #print(stock.moving_average_bias_ratio(5, 10))               #計算五日、十日乖離值與持續天數
 
 #被Line Message API呼叫運作
 @app.route("/callback", methods=['POST'])
@@ -49,6 +61,9 @@ def handle_message(event):
     msg = event.message.text
     print("使用者傳送的訊息為", msg)
     msg = msg.encode('utf-8')
+    if "股票" in msg:
+        stockInfoMsg = getStockInfoFromMsg(msg)
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text=stockInfoMsg))
     if msg=="我愛小咖啡熊熊":
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="主人我也愛你"))
     if msg=="小咖啡熊熊是正妹":
