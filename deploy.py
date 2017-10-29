@@ -103,6 +103,8 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="等待訓練的新模式"))
     if msg=="404實驗室":
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="有3D印表機"))
+    if "誰" in msg and "我" in msg:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="我辨識您為"+str(event.message.id)))
     else:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
     
