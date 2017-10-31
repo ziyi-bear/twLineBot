@@ -110,7 +110,7 @@ def handle_message(event):
     if "開" in msg and "燈" in msg:
         http = urllib3.PoolManager()
         r = http.request('GET', 'http://120.105.129.29/appliances/appliances.php?SW_status='off'')
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="開啟燈光成功 連線狀況:"+str(r.status)))
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="開啟燈光成功 連線狀況:"+str(r.body)))
     else:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
     
