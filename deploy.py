@@ -7,8 +7,6 @@ from flask import Flask, request, abort
 
 from datetime import datetime
 
-import urllib3
-
 #說明文件:https://pypi.python.org/pypi/grs
 from grs import Stock #台灣上市上櫃股票價格擷取（Fetch Taiwan Stock Exchange data）含即時盤、台灣時間轉換、開休市判斷。
 from grs import TWSEOpen
@@ -107,10 +105,10 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="有3D印表機"))
     if "誰" in msg and "我" in msg:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="我辨識您為"+str(event.message.id)))
-    if "開" in msg and "燈" in msg:
+    if "開" in msg and "門" in msg:
         http = urllib3.PoolManager()
-        r = http.request('GET', 'http://120.105.129.29/appliances/appliances.php?SW_status='off'')
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="開啟燈光成功 連線狀況:"+str(r.body)))
+        r = http.request('GET', 'http://120.105.129.181/?Door=1')
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="開啟406實驗室大門成功"))
     else:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
     
