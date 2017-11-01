@@ -104,14 +104,24 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="我是最美的小咖啡熊熊"))
     if msg=="等待建立與過濾的資料":
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="等待訓練的新模式"))
-    if msg=="404實驗室":
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="有3D印表機"))
+    if "404" in msg: #404實驗室控制系統
+        if "門" in msg and "開" in msg:
+            http = urllib3.PoolManager()
+            r = http.request('GET', 'http://120.105.129.100/?Door=1')
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text="開啟404實驗室大門成功 連線狀況:"+str(r.status)))
+        else:
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text="有3D印表機"))
     if "誰" in msg and "我" in msg:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="我辨識您為"+str(event.message.id)))
-    if "開" in msg and "門" in msg:
-        http = urllib3.PoolManager()
-        r = http.request('GET', 'http://120.105.129.181/?Door=1')
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="開啟406實驗室大門成功 連線狀況:"+str(r.status)))
+    if "406" in msg: #406實驗室控制系統
+        if "門" in msg and "開" in msg:
+            http = urllib3.PoolManager()
+            r = http.request('GET', 'http://120.105.129.181/?Door=1')
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text="開啟404實驗室大門成功 連線狀況:"+str(r.status)))
+        else:
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text="無3D印表機"))
+    if "門" in msg and "開" in msg:
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="請先指定要開哪間實驗室的大門喔! 404還是406呢?"))
     else:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text=event.message.text))
     
