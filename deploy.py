@@ -7,6 +7,9 @@ from flask import Flask, request, abort
 
 from datetime import datetime
 
+#一般與其他API連線所需
+import urllib3
+
 #說明文件:https://pypi.python.org/pypi/grs
 from grs import Stock #台灣上市上櫃股票價格擷取（Fetch Taiwan Stock Exchange data）含即時盤、台灣時間轉換、開休市判斷。
 from grs import TWSEOpen
