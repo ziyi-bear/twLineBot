@@ -53,7 +53,7 @@ testpath==0.3
 tornado==4.5.1
 traitlets==4.3.2
 ujson==1.35
-urllib3==1.22
+urllib3==1.26.5
 wcwidth==0.1.7
 Werkzeug==0.12.2
 win-unicode-console==0.5
